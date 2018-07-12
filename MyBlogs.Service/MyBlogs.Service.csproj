@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyBlogs.DAO\MyBlogs.DAO.csproj" />
+    <ProjectReference Include="..\MyBlogs.Domain\MyBlogs.Domain.csproj" />
+    <ProjectReference Include="..\MyBlogs.DTO\MyBlogs.DTO.csproj" />
+  </ItemGroup>
+
+</Project>

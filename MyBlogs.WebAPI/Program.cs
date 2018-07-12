@@ -19,6 +19,7 @@ namespace MyBlogs.WebAPI
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseUrls("http://*:8088")
                 .UseStartup<Startup>();
     }
 }

@@ -6,8 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using MyBlogs.DAO;
+using MyBlogs.DAO.DAO;
+using MyBlogs.Domain;
+using MyBlogs.Service;
 
 namespace MyBlogs.WebAPI
 {
@@ -23,6 +29,11 @@ namespace MyBlogs.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<WordpressContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("Connection"));
+                options.UseLoggerFactory(new LoggerFactory().AddConsole());
+            });
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -32,6 +43,13 @@ namespace MyBlogs.WebAPI
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IWp_userDAO, Wp_userDAO>();
+            services.AddScoped<IWp_commentDAO, Wp_commentDAO>();
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,5 +74,6 @@ namespace MyBlogs.WebAPI
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+      
     }
 }
